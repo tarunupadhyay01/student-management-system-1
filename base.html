@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Student Management System{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">S</span><span>Student<span class="brand-light">Hub</span></span></a>
+      <div class="side-label">WORKSPACE</div>
+      <a class="nav-link active" href="{{ url_for('index') }}"><span>▦</span> Dashboard</a>
+      <a class="nav-link" href="{{ url_for('add_student') }}"><span>＋</span> Add student</a>
+      <div class="sidebar-note"><div class="note-icon">✦</div><strong>Stay organized</strong><p>Manage student records in one simple workspace.</p></div>
+      <div class="sidebar-footer">STUDENT MANAGEMENT<br><span>LOCAL DEMO VERSION</span></div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar"><div><span class="eyebrow">ACADEMIC WORKSPACE</span><h1>{% block heading %}Dashboard{% endblock %}</h1></div><div class="top-user"><span class="avatar">TU</span><div><strong>Admin</strong><small>Workspace</small></div></div></header>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}<div class="flash-wrap">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+      <footer class="page-footer">StudentHub <span>•</span> Student Management System</footer>
+    </main>
+  </div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

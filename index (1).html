@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | StudentHub{% endblock %}
+{% block heading %}Dashboard{% endblock %}
+{% block content %}
+<section class="welcome-row"><div><h2>Good day, Admin <span>✦</span></h2><p>Here’s an overview of your student records.</p></div><a class="btn btn-primary" href="{{ url_for('add_student') }}">＋ Add new student</a></section>
+<section class="stats-grid">
+  <article class="stat-card"><div class="stat-top"><span>Total students</span><span class="stat-icon purple">♙</span></div><strong>{{ total }}</strong><small>Registered records</small></article>
+  <article class="stat-card"><div class="stat-top"><span>Courses represented</span><span class="stat-icon green">▤</span></div><strong>{{ courses }}</strong><small>Distinct courses</small></article>
+  <article class="stat-card"><div class="stat-top"><span>Workspace status</span><span class="stat-icon orange">✦</span></div><strong class="status-text">Active</strong><small>Local database connected</small></article>
+</section>
+<section class="panel">
+  <div class="panel-head"><div><h3>Student directory</h3><p>View and manage all registered students.</p></div>
+    <form class="search-form" method="get" action="{{ url_for('index') }}"><input type="search" name="q" value="{{ q }}" placeholder="Search students..."><button aria-label="Search">⌕</button></form>
+  </div>
+  <div class="table-wrap">
+    <table><thead><tr><th>STUDENT</th><th>EMAIL</th><th>COURSE</th><th>YEAR</th><th>PHONE</th><th>ACTIONS</th></tr></thead>
+    <tbody>
+    {% for student in students %}
+      <tr><td><div class="student-cell"><span class="student-avatar">{{ student.name[:1]|upper }}</span><strong>{{ student.name }}</strong></div></td><td>{{ student.email }}</td><td><span class="course-pill">{{ student.course }}</span></td><td>{{ student.year }}</td><td>{{ student.phone or '—' }}</td><td><div class="actions"><a class="action edit" href="{{ url_for('edit_student', student_id=student.id) }}">Edit</a><form method="post" action="{{ url_for('delete_student', student_id=student.id) }}" class="delete-form"><button class="action delete" data-confirm="Delete this student record?">Delete</button></form></div></td></tr>
+    {% else %}
+      <tr><td colspan="6"><div class="empty-state"><div>♙</div><strong>No students found</strong><p>{% if q %}Try another search term.{% else %}Add your first student to get started.{% endif %}</p><a class="btn btn-primary" href="{{ url_for('add_student') }}">＋ Add student</a></div></td></tr>
+    {% endfor %}
+    </tbody></table>
+  </div>
+  <div class="table-foot">Showing {{ students|length }} record(s)</div>
+</section>
+{% endblock %}
